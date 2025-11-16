@@ -1,0 +1,19 @@
+name: Keep N8N Alive on Azure
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping N8N Azure
+        run: |
+          echo "Pinging N8N to keep it alive..."
+          curl -s -o /dev/null -w "HTTP Status: %{http_code}" https://morgansn8n.azurewebsites.net || true
+          echo "Keep-alive ping completed"
+          
+      - name: Log timestamp  
+        run: echo "Last ping at $(date)"
